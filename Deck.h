@@ -19,7 +19,7 @@ public:
 	Deck();
 	void shuffle();
 	Card getCard();
-	void drawCard();
+	Card* drawCard();
 	void printDeck();
 	
 	const char spade[4] = "\xe2\x99\xa0";
