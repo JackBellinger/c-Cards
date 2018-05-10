@@ -1,9 +1,11 @@
+#include "Game.h"
 #include "Deck.h"
+
 using namespace std;
 
 int main()
 {
-	Deck x = Deck();
-	x.printDeck();
+	Poker* game = new Poker();
+	game->gameLoop();
 	return 0;
 }

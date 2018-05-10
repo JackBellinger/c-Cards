@@ -1,31 +1,44 @@
 #ifndef CARDS_H
 #define CARDS_H
-#include <vector>
+#include <iostream>
 using namespace std;
 
-struct Card
+class Card
 {
-	int num;
+public:
+	int rank;
 	int suit;
-	Card(int n = 0, int s = 0){num = n; suit = s;}
+public:
+	static const char spade[4];
+	static const char club[4];
+	static const char heart[4];
+	static const char diamond[4];
+	static const char* pics[4];
+
+	Card(int r = 0, int s = 0){rank = r; suit = s;}
+
+	bool operator == (const Card);
+	bool operator != (const Card);
+	bool operator > (const Card);
+	bool operator >= (const Card);
+	bool operator < (const Card);
+	bool operator <= (const Card);
+	//Card operator [] (int);
+	
+	friend ostream& operator << (ostream &stream, const Card &card);
 };
 
 class Deck
 {
-private:
-	vector<Card> cards;
+public://private:
+	Card cards[52];
 	int nextCard;
+	
+	void swap(int, int);
 public:
 	Deck();
 	void shuffle();
-	Card getCard();
 	Card* drawCard();
 	void printDeck();
-	
-	const char spade[4] = "\xe2\x99\xa0";
-	const char club[4] = "\xe2\x99\xa3";
-	const char heart[4] = "\xe2\x99\xa5";
-	const char diamond[4] = "\xe2\x99\xa6";
-
 };
 #endif
