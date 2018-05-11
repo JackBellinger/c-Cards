@@ -9,7 +9,7 @@ const char Card::spade[4] = "\xe2\x99\xa0";
 const char Card::club[4] = "\xe2\x99\xa3";
 const char Card::heart[4] = "\xe2\x99\xa5";
 const char Card::diamond[4] = "\xe2\x99\xa6";
-const char* Card::pics[4] = {Card::club, Card::diamond, Card::club, Card::spade};
+const char* Card::pics[4] = {Card::spade, Card::heart, Card::diamond, Card::club};
 
 Deck::Deck()
 {
@@ -20,9 +20,9 @@ Deck::Deck()
 	}
 }
 
-Card* Deck::drawCard()
+Card Deck::drawCard()
 {
-	Card* rCard = &cards[nextCard];
+	Card rCard = cards[nextCard];
 	nextCard++;
 	if(nextCard == 52)
 		cout << "Last Card" << endl;

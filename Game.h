@@ -1,34 +1,56 @@
 #ifndef GAME_H
 #define GAME_H
 #include "Deck.h"
+#include <vector>
+#include <string>
 class Game
 {
 protected:
-	char* welcomeMessage;
 	int playerMoney;
+	int bet;
 	Deck deck;
-
 public:	
 	Game();
-	virtual void gameLoop() = 0;
-	virtual bool round() = 0;
+	void gameLoop();
+	bool round();
 	virtual void deal() = 0;
+	virtual int handValue() = 0;
+	virtual void test() = 0;
 	
 };
 
 class Poker: public Game
 {
-
 private:
-	Card* playerHand[5];
-	int bet;
+	vector<Card> playerHand;
 	
 public:
 	Poker();
-	void gameLoop();
-	bool round();
+
 	void deal();
 	void sortHand();
 	int handValue();
+	void test();
+	void printHand();
+};
+
+class BlackJack : public Game
+{
+private:
+	int insurance;
+	vector<Card> dealerHand;
+	int dealerSum;
+	vector<Card> playerHand;
+	int playerSum;
+
+	void printDealerHand();
+	void printPlayerHand();
+
+public:
+	BlackJack();
+
+	void deal();
+	int handValue();
+	void test();
 };
 #endif
