@@ -4,22 +4,21 @@
 Game::Game(){}
 Poker::Poker()
 {
-	//playerHand.resize(5);
+	
 }
 BlackJack::BlackJack()
 {
-	//playerHand.resize(2);
-	//dealerHand.resize(2);
+	
 }
 void Game::gameLoop()
 {
 	cout << "Enter an amount of money to play: ";
 	playerMoney = 1000;	
-	//cin >> playerMoney;
+	cin >> playerMoney;
 	
 	cout << "Do you want to play a round? (Y/N): ";
 	char response = 'Y';
-	//cin >> response;
+	cin >> response;
 	bool quit = (response == 'Y' || response == 'y')? false : true;
 	if(response == 't')
 		test();
@@ -33,7 +32,7 @@ bool Game::round()
 {
 	cout << "How much do you want to bet? ";
 	bet = 100;	
-	//cin >> bet;
+	cin >> bet;
 	while(bet > playerMoney)
 	{
 		cout << "Please bet an amount that is less than your total money: ";
@@ -55,18 +54,21 @@ bool Game::round()
 }
 void Poker::deal()
 {
+	playerHand.clear();
 	for(int i = 0; i < 5; i++)
 	{
-		Card dealt = deck.drawCard();
-		cout << dealt << ": Hold (1) or Redraw (0)? ";
-		bool response = true;
+		playerHand.push_back(deck.drawCard());
+		printHand(playerHand);
+		cout << ": Hold (0) or Redraw (1)? ";
+		bool response = false;
 		cin >> response;
 		if(response)
-			playerHand.push_back(dealt);
-		else
+		{
+			playerHand.pop_back();
 			playerHand.push_back(deck.drawCard());
+		}
 	}
-	sortHand();
+	//sortHand();
 	printHand(playerHand);
 }
 void Poker::sortHand()
@@ -83,15 +85,6 @@ void Poker::sortHand()
 		
 	}
 }
-/*
-void Poker::printHand()
-{
-	cout << "Your hand: ";
-	for(int i = 0; i < 5; i++)
-		cout << playerHand[i] << " ";
-	cout << endl;
-}
-*/
 int Poker::handValue()
 {
 	int reward = 0;

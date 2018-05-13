@@ -27,11 +27,11 @@ Card::Card(int r, int s)
 string Card::getRow(int row)
 {
 	string rankStr = " " + std::to_string(rank);
-	if(rank == 1) rankStr = " A";
-	if(rank == 10) rankStr = "10";
-	if(rank == 11) rankStr = " J";
-	if(rank == 12) rankStr = " Q";
-	if(rank == 13) rankStr = " K";
+	if(rank == 1) rankStr = pics[suit] + "A";
+	if(rank == 10) rankStr = "10";//need to do this so an extra space doesn't get added
+	if(rank == 11) rankStr = pics[suit] + "J";
+	if(rank == 12) rankStr = pics[suit] + "Q";
+	if(rank == 13) rankStr = pics[suit] + "K";
 
 	switch(row)
 	{
