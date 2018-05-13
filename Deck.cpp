@@ -1,16 +1,91 @@
 #include "Deck.h"
+
 #include <iostream>
+#include <string>
 #include <ctime>
 #include <cstdlib>
 
 using namespace std;
 
-const char Card::spade[4] = "\xe2\x99\xa0";
-const char Card::club[4] = "\xe2\x99\xa3";
-const char Card::heart[4] = "\xe2\x99\xa5";
-const char Card::diamond[4] = "\xe2\x99\xa6";
-const char* Card::pics[4] = {Card::spade, Card::heart, Card::diamond, Card::club};
+const string Card::spade = "\xe2\x99\xa0";
+const string Card::club = "\xe2\x99\xa3";
+const string Card::heart = "\xe2\x99\xa5";
+const string Card::diamond = "\xe2\x99\xa6";
+const string Card::pics[4] = {Card::spade, Card::heart, Card::diamond, Card::club};
 
+const string Card::startColor = "\033[1;30;47m";
+const string Card::endColor = "\033[0m";
+const string Card::blankLine = "│         │";
+
+Card::Card(int r, int s)
+{
+	rank = r;
+	suit = s;
+	oneSuitLine = "│    " + pics[suit] + "    │";
+	twoSuitLine = "│  " + pics[suit] + "   " + pics[suit] + "  │";
+}
+string Card::getRow(int row)
+{
+	string rankStr = " " + std::to_string(rank);
+	if(rank == 1) rankStr = " A";
+	if(rank == 10) rankStr = "10";
+	if(rank == 11) rankStr = " J";
+	if(rank == 12) rankStr = " Q";
+	if(rank == 13) rankStr = " K";
+
+	switch(row)
+	{
+		case 0: 
+			return "┌─────────┐";
+		case 1: 
+			return string("│") + rankStr + string("       │");
+		case 2: 
+			if(rank == 3)
+				return oneSuitLine;
+			if(rank >= 4 && rank <= 10)
+				return twoSuitLine;
+			else
+				return blankLine;
+		case 3:
+			if(rank == 2 || (rank >= 7 && rank <= 10))
+				return oneSuitLine;
+			else
+				return blankLine;
+		case 4:
+			if(rank == 9 || rank == 10)
+				return twoSuitLine;
+			else
+				return blankLine;
+		case 5:
+			if(rank == 1 || rank == 3 || rank == 5)
+				return oneSuitLine;
+			if(rank == 6 || rank == 7 || rank == 8)
+				return twoSuitLine;
+			else
+				return blankLine;
+		case 6:
+			if(rank == 9 || rank == 10)
+				return twoSuitLine;
+			else
+				return blankLine;
+		case 7:
+			if(rank == 2 || rank == 8 || rank == 10)
+				return oneSuitLine;
+			else
+				return blankLine;
+		case 8:
+			if(rank == 3)
+				return oneSuitLine;
+			if(rank >= 4 && rank <= 10)
+				return twoSuitLine;
+			else
+				return blankLine;
+		case 9:
+			return string("│       ") + rankStr + string("│");
+		case 10:
+			return "└─────────┘";
+	}
+}
 Deck::Deck()
 {
 	for(int i = 0; i < 52; i++)
@@ -36,7 +111,8 @@ void Deck::shuffle()
 	srand( (unsigned)time(NULL));
 	for(int i = 0; i < 52; i++)
 	{
-		rnum = rand() % 52 + 1;
+		rnum = (rand() % 51) + 1;
+		//cout << "swapping " << i << " and " << rnum << endl;
 		swap(i, rnum);
 	}
 	nextCard = 0;
@@ -47,6 +123,7 @@ void Deck::printDeck()
 	cout << sizeof(cards) / sizeof(cards[0]) << endl;
 	for(int i = 0; i < 52; i++)
 		cout << "card #" << i + 1 << " = " << cards[i]<< endl;
+	cout << "done" << endl;
 }
 
 void Deck::swap(int x, int y)

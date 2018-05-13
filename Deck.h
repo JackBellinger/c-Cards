@@ -1,6 +1,7 @@
 #ifndef CARDS_H
 #define CARDS_H
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Card
@@ -9,13 +10,20 @@ public:
 	int rank;
 	int suit;
 
-	static const char spade[4];
-	static const char club[4];
-	static const char heart[4];
-	static const char diamond[4];
-	static const char* pics[4];
+	static const string spade;
+	static const string club;
+	static const string heart;
+	static const string diamond;
+	static const string pics[4];
 
-	Card(int r = 1, int s = 0){rank = r; suit = s;}
+	static const string startColor;
+	static const string endColor;
+	static const string blankLine;
+	string oneSuitLine;
+	string twoSuitLine;
+
+	Card(int r = 1, int s = 0);
+	string getRow(int);
 
 	bool operator == (const Card);
 	bool operator != (const Card);

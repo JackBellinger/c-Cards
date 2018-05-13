@@ -13,6 +13,7 @@ public:
 	Game();
 	void gameLoop();
 	bool round();
+	void printHand(vector<Card>, int = 0);
 	virtual void deal() = 0;
 	virtual int handValue() = 0;
 	virtual void test() = 0;
@@ -31,7 +32,7 @@ public:
 	void sortHand();
 	int handValue();
 	void test();
-	void printHand();
+	//void printHand();
 };
 
 class BlackJack : public Game
@@ -43,7 +44,7 @@ private:
 	vector<Card> playerHand;
 	int playerSum;
 
-	void printDealerHand();
+	void printDealerHand(int = 0);
 	void printPlayerHand();
 
 public:

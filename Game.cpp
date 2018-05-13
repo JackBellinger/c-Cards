@@ -14,9 +14,10 @@ BlackJack::BlackJack()
 void Game::gameLoop()
 {
 	cout << "Enter an amount of money to play: ";
-	cin >> playerMoney;
+	playerMoney = 1000;	
+	//cin >> playerMoney;
 	
-	//cout << "Do you want to play a round? (Y/N): ";
+	cout << "Do you want to play a round? (Y/N): ";
 	char response = 'Y';
 	//cin >> response;
 	bool quit = (response == 'Y' || response == 'y')? false : true;
@@ -31,7 +32,8 @@ void Game::gameLoop()
 bool Game::round()
 {
 	cout << "How much do you want to bet? ";
-	cin >> bet;
+	bet = 100;	
+	//cin >> bet;
 	while(bet > playerMoney)
 	{
 		cout << "Please bet an amount that is less than your total money: ";
@@ -65,7 +67,7 @@ void Poker::deal()
 			playerHand.push_back(deck.drawCard());
 	}
 	sortHand();
-	printHand();
+	printHand(playerHand);
 }
 void Poker::sortHand()
 {
@@ -81,6 +83,7 @@ void Poker::sortHand()
 		
 	}
 }
+/*
 void Poker::printHand()
 {
 	cout << "Your hand: ";
@@ -88,6 +91,7 @@ void Poker::printHand()
 		cout << playerHand[i] << " ";
 	cout << endl;
 }
+*/
 int Poker::handValue()
 {
 	int reward = 0;
@@ -201,7 +205,7 @@ void Poker::test()
 	playerHand.push_back(Card(7, 2));
 	playerHand.push_back(Card(9, 3));
 	playerHand.push_back(Card(11, 3));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -211,7 +215,7 @@ void Poker::test()
 	playerHand.push_back(Card(2, 2));
 	playerHand.push_back(Card(3, 3));
 	playerHand.push_back(Card(13, 3));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -222,7 +226,7 @@ void Poker::test()
 	playerHand.push_back(Card(1, 3));
 	playerHand.push_back(Card(3, 3));
 	playerHand.push_back(Card(12, 3));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -233,7 +237,7 @@ void Poker::test()
 	playerHand.push_back(Card(3, 3));
 	playerHand.push_back(Card(4, 0));
 	playerHand.push_back(Card(5, 3));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -244,7 +248,7 @@ void Poker::test()
 	playerHand.push_back(Card(7, 3));
 	playerHand.push_back(Card(9, 3));
 	playerHand.push_back(Card(10, 3));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -255,7 +259,7 @@ void Poker::test()
 	playerHand.push_back(Card(1, 3));
 	playerHand.push_back(Card(2, 2));
 	playerHand.push_back(Card(2, 3));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -266,7 +270,7 @@ void Poker::test()
 	playerHand.push_back(Card(1, 2));
 	playerHand.push_back(Card(1, 3));
 	playerHand.push_back(Card(11, 3));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -277,7 +281,7 @@ void Poker::test()
 	playerHand.push_back(Card(3, 0));
 	playerHand.push_back(Card(4, 0));
 	playerHand.push_back(Card(5, 0));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -288,7 +292,7 @@ void Poker::test()
 	playerHand.push_back(Card(11, 1));
 	playerHand.push_back(Card(12, 1));
 	playerHand.push_back(Card(13, 1));
-	printHand();
+	printHand(playerHand);
 	cout << "reward: x" << handValue() << endl << endl;
 	playerHand.clear();
 
@@ -302,21 +306,38 @@ void BlackJack::deal()
 	playerSum = 0;
 	dealerHand.clear();
 	dealerSum = 0;
-
-	dealerHand.push_back(deck.drawCard());
-	dealerHand.push_back(deck.drawCard());
-	dealerSum += dealerHand[0].rank + dealerHand[1].rank;
 	
-	playerHand.push_back(deck.drawCard());
-	playerHand.push_back(deck.drawCard());
-	playerSum += playerHand[0].rank + playerHand[1].rank;
-	
-	cout << "Dealer's first card: " << dealerHand[0] << endl;	
-	if(dealerHand[0].rank == 1)
+	Card dealt;
+	for(int i = 0; i < 4; i++)
+	{
+		dealt = deck.drawCard();
+		if(i < 2)
+		{
+			dealerHand.push_back(dealt);
+			if(dealt.rank == 1 && dealerSum <= 11)
+				dealerSum += 10;
+			else if(dealt.rank > 10)
+				dealerSum += 10;
+			else
+				dealerSum += dealt.rank;
+		}
+		else
+		{
+			playerHand.push_back(dealt);
+			if(dealt.rank > 10)
+				playerSum += 10;
+			else
+				playerSum += dealt.rank;
+		}
+	}
+	cout << "Dealer's first card: "<< endl;	
+	printDealerHand(1);
+	if(dealerHand[1].rank == 1)
 	{
 		cout << "You need to bet insurance" << endl;
 		insurance = bet / 2;
-		cout << "Dealer's second card: " << dealerHand[1] << endl;
+		cout << "Dealer's second card: " << endl;
+		printDealerHand();
 		if(dealerSum == 21 || dealerHand[1].rank == 10)
 		{
 			cout << "BlackJack! " << endl;
@@ -337,7 +358,19 @@ void BlackJack::deal()
 		{
 			Card dealt = deck.drawCard();
 			playerHand.push_back(dealt);
-			playerSum += dealt.rank;
+			if(dealt.rank == 1)
+			{
+				cout << "You got an ace, would you like it to be a 10(0) or a 1(1)? ";
+				bool response = 1;
+				cin >> response;
+				playerSum += response? 1:10;
+				cout << endl;
+			}
+			if(dealt.rank > 10)
+				playerSum += 10;
+			else
+				playerSum += dealt.rank;
+			printDealerHand(1);
 			printPlayerHand();
 			if(playerSum > 21)
 			{
@@ -347,15 +380,21 @@ void BlackJack::deal()
 			cout << "hit(0) or hold(1)? : ";
 			cin >> hold;
 		}
+		printDealerHand();
 		while(dealerSum <= 16)
 		{
 			Card dealt = deck.drawCard();
 			dealerHand.push_back(dealt);
-			dealerSum += dealt.rank;
+			if(dealt.rank == 1 && dealerSum <= 11)
+				dealerSum += 10;
+			else if(dealt.rank > 10)
+				dealerSum += 10;
+			else
+				dealerSum += dealt.rank;
 			printDealerHand();
 			if(dealerSum > 21)
 			{
-				cout << "Bust! You win" << endl;
+				cout << "Dealer bust! You win" << endl;
 				dealerSum = 0;
 				return;
 			}
@@ -364,21 +403,19 @@ void BlackJack::deal()
 	}
 	
 }
-void BlackJack::printDealerHand()
+void BlackJack::printDealerHand(int hidden)
 {
-	cout << endl << "Dealer's total: " << dealerSum << " | Hand: ";
-	vector<Card>::iterator it;
-	for(it = dealerHand.begin(); it != dealerHand.end(); it++)
-		cout << *it << " ";
-	cout << endl;
+	cout << endl << "Dealer's Hand | ";
+	if(hidden == 0)
+		cout << "Total: " << dealerSum << endl;
+	else
+		cout << endl;
+	printHand(dealerHand, hidden);
 }
 void BlackJack::printPlayerHand()
 {
-	cout << endl << "Your total: " << playerSum << " | Hand: ";
-	vector<Card>::iterator it;
-	for(it = playerHand.begin(); it != playerHand.end(); it++)
-		cout << *it << " ";
-	cout << endl;
+	cout << endl << "Your Hand | Total: " << playerSum << endl;
+	printHand(playerHand);
 }
 int BlackJack::handValue()
 {
@@ -404,7 +441,34 @@ void BlackJack::test()
 
 }
 
-
+void Game::printHand(vector<Card> hand, int numHidden)
+{
+	vector<Card>::iterator it;
+	for(int r = 0; r < 11; r ++)
+	{
+		string line = Card::startColor;
+		for(it = hand.begin(); it != hand.end(); it++)
+		{
+			int dis = distance(hand.begin(), it);
+			if(dis < numHidden)
+			{
+				if(r == 0)
+					line += "┌─────────┐";
+				else if(r == 10)
+					line += "└─────────┘";
+				else if(r % 2 == 0)
+					line += "│ $  $  $ │";
+				else
+					line += "│   $ $   │";
+			}
+			else
+				line += it->getRow(r) + Card::endColor + "   " + Card::startColor;
+		}
+		line += Card::endColor + "\n";
+		cout << line;
+	}
+			
+}
 
 
 
