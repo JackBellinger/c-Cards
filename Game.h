@@ -5,53 +5,54 @@
 #include <string>
 class Game
 {
-protected:
-	int playerMoney;
-	int bet;
-	Deck deck;
-public:	
-	Game();
-	void gameLoop();
-	bool round();
-	void printHand(vector<Card>, int = 0);
-	virtual void deal() = 0;
-	virtual int handValue() = 0;
-	virtual void test() = 0;
-	
+	protected:
+		int playerMoney;
+		vector<Card> playerHand;
+		int bet;
+		Deck deck;
+		void printHand(vector<Card>, int = 0);
+		bool round();
+		virtual void deal() = 0;
+		virtual int reward() = 0;
+		virtual void test() = 0;
+		virtual void clearScreen(int = 40) = 0;
+
+	public:	
+		Game();
+		int gameLoop(int = 1000);	
 };
 
 class Poker: public Game
 {
-private:
-	vector<Card> playerHand;
-	
-public:
-	Poker();
-
-	void deal();
-	void sortHand();
-	int handValue();
-	void test();
-	//void printHand();
+	public:
+		Poker();
+	private:
+		vector<Card> playerHand;
+		void deal();
+		void sortHand();
+		int reward();
+		void test();
+		void clearScreen(int = 40);
 };
 
 class BlackJack : public Game
 {
-private:
-	int insurance;
-	vector<Card> dealerHand;
-	int dealerSum;
-	vector<Card> playerHand;
-	int playerSum;
+	public:
+		BlackJack();
+	private:
+		int insurance;
+		vector<Card> dealerHand;
+		int dealerSum;
+		vector<Card> playerHand;
+		int playerSum;
 
-	void printDealerHand(int = 0);
-	void printPlayerHand();
+		void printDealerHand(int = 0);
+		void printPlayerHand();
 
-public:
-	BlackJack();
-
-	void deal();
-	int handValue();
-	void test();
+		void deal();
+		int handSum(vector<Card>);
+		int reward();
+		void test();
+		void clearScreen(int = 40);
 };
 #endif

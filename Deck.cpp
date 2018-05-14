@@ -7,10 +7,10 @@
 
 using namespace std;
 
-const string Card::spade = "\xe2\x99\xa0";
-const string Card::club = "\xe2\x99\xa3";
-const string Card::heart = "\xe2\x99\xa5";
-const string Card::diamond = "\xe2\x99\xa6";
+const string Card::spade = "\033[1;30;47m\xe2\x99\xa0\033[1;30;47m";
+const string Card::club = "\033[1;30;47m\xe2\x99\xa3\033[1;30;47m";
+const string Card::heart = "\033[1;31;47m\xe2\x99\xa5\033[1;30;47m";
+const string Card::diamond = "\033[1;31;47m\xe2\x99\xa6\033[1;30;47m";
 const string Card::pics[4] = {Card::spade, Card::heart, Card::diamond, Card::club};
 
 const string Card::startColor = "\033[1;30;47m";
@@ -112,7 +112,6 @@ void Deck::shuffle()
 	for(int i = 0; i < 52; i++)
 	{
 		rnum = (rand() % 51) + 1;
-		//cout << "swapping " << i << " and " << rnum << endl;
 		swap(i, rnum);
 	}
 	nextCard = 0;
